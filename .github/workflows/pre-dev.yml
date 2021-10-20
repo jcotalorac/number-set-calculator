@@ -1,0 +1,9 @@
+name: Number set Calculator CI/CD pre-dev pipeline
+
+on:
+  push:
+    branches:
+      - pre-dev
+  pull_request:
+    branches:
+      - pre-dev
