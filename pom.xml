@@ -10,5 +10,7 @@
     <name>application-appgate</name>
     <description>Project source code for number set calculator app</description>
 
-    
+    <properties>
+        <java.version>11</java.version>
+    </properties>
 </project>
