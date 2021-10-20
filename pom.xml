@@ -7,6 +7,8 @@
     <groupId>com.appgate.application</groupId>
     <artifactId>number-set-calculator</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <name>application-appgate</name>
+    <description>Project source code for number set calculator app</description>
 
     
 </project>
