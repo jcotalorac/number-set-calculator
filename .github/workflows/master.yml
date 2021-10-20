@@ -1,12 +1,12 @@
-name: Number set Calculator CI/CD pre-dev pipeline
+name: Number set Calculator CI/CD master pipeline
 
 on:
   push:
     branches:
-      - pre-dev
+      - master
   pull_request:
     branches:
-      - pre-dev
+      - master
 
 jobs:
   build_and_test:
