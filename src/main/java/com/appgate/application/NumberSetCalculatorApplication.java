@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AppGateApplication {
+public class NumberSetCalculatorApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AppGateApplication.class, args);
+        SpringApplication.run(NumberSetCalculatorApplication.class, args);
     }
 }
