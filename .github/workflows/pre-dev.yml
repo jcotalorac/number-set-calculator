@@ -9,7 +9,7 @@ on:
       - pre-dev
 
 jobs:
-  build_and_test
+  build_and_test:
 
     runs-on: ubuntu-latest
 
