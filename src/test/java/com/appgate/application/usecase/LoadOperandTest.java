@@ -13,6 +13,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
@@ -37,6 +39,7 @@ class LoadOperandTest {
         String expected = "OK";
         String stringUUID = "230bd0ab-d2f6-415c-b5ff-9997555175a6";
         UUID convertedUUID = UUID.fromString(stringUUID);
+        when(persistOperand.apply(any(UUID.class), any(Number.class))).thenReturn("OK");
 
         String result = loadOperand.apply(convertedUUID, 5);
 
