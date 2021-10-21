@@ -7,5 +7,7 @@ RUN mvn -f /app/pom.xml clean package verify
 # Run stage
 FROM openjdk:11-jre-slim
 EXPOSE 8080
-COPY --from=build /app/target/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+RUN addgroup --system spring && adduser --system --group spring
+USER spring:spring
+COPY --from=build /app/target/*.jar /app/app.jar
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE}", "/app/app.jar"]
