@@ -1,18 +1,21 @@
 package com.appgate.application.usecase.impl;
 
+import com.appgate.application.model.CalculatorStorage;
 import com.appgate.application.usecase.PersistOperand;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PersistOperandImpl implements PersistOperand {
 
-    public static List<Number> operands = new ArrayList<>();
-
     @Override
-    public void apply(Number operand) {
-        operands.add(operand);
+    public String apply(UUID operationId, Number operand) {
+        if (CalculatorStorage.operands.containsKey(operationId)) {
+            CalculatorStorage.operands.get(operationId).add(operand);
+            return "OK";
+        } else {
+            return "KO";
+        }
     }
 }

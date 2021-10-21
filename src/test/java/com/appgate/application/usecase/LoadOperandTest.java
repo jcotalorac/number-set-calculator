@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("test")
@@ -33,8 +35,10 @@ class LoadOperandTest {
     @Test
     void testSuccessfulApply() {
         String expected = "OK";
+        String stringUUID = "230bd0ab-d2f6-415c-b5ff-9997555175a6";
+        UUID convertedUUID = UUID.fromString(stringUUID);
 
-        String result = loadOperand.apply(5);
+        String result = loadOperand.apply(convertedUUID, 5);
 
         assertEquals(expected, result);
     }

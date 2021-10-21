@@ -16,7 +16,7 @@ public class LoadOperandController {
     @PostMapping("/loadOperand")
     public LoadOperandResponse loadOperand(LoadOperandRequest loadOperandRequest) {
         return LoadOperandResponse.builder()
-                .result(loadOperand.apply(loadOperandRequest.getOperand()))
+                .result(loadOperand.apply(loadOperandRequest.getOperationId(), loadOperandRequest.getOperand()))
                 .build();
     }
 }

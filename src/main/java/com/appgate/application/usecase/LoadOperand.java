@@ -1,7 +1,9 @@
 package com.appgate.application.usecase;
 
+import java.util.UUID;
+
 @FunctionalInterface
 public interface LoadOperand {
 
-    String apply(Number number);
+    String apply(UUID operationId, Number number);
 }

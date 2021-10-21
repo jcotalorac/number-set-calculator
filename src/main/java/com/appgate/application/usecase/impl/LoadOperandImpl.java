@@ -5,6 +5,8 @@ import com.appgate.application.usecase.PersistOperand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class LoadOperandImpl implements LoadOperand {
 
@@ -12,8 +14,8 @@ public class LoadOperandImpl implements LoadOperand {
     private PersistOperand persistOperand;
 
     @Override
-    public String apply(Number number) {
-        persistOperand.apply(number);
+    public String apply(UUID operationId, Number number) {
+        persistOperand.apply(operationId, number);
         return "OK";
     }
 }

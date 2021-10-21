@@ -1,7 +1,9 @@
 package com.appgate.application.usecase;
 
+import java.util.UUID;
+
 @FunctionalInterface
 public interface PersistOperand {
 
-    void apply(Number operand);
+    String apply(UUID operationId, Number operand);
 }

@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,10 +30,12 @@ class LoadOperandControllerTest {
     @Test
     void testSuccessfulLoadOperand() {
         String expectedSuccessfulResult = "OK";
-        when(loadOperand.apply(any(Number.class))).thenReturn("OK");
+        when(loadOperand.apply(any(UUID.class), any(Number.class))).thenReturn("OK");
 
         LoadOperandResponse loadOperandResponse = loadOperandController
-                .loadOperand(LoadOperandRequest.builder().operand(3)
+                .loadOperand(LoadOperandRequest.builder()
+                        .operationId(UUID.randomUUID())
+                        .operand(3)
                         .build());
 
         assertNotNull(loadOperandResponse);
