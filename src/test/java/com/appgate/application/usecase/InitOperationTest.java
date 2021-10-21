@@ -1,41 +1,37 @@
 package com.appgate.application.usecase;
 
-import com.appgate.application.usecase.impl.StartCalculationImpl;
+import com.appgate.application.usecase.impl.InitOperationImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class StartCalculationTest {
+class InitOperationTest {
 
-    private StartCalculation startCalculation;
+
+    private InitOperation initOperation;
 
     @InjectMocks
-    private StartCalculationImpl startCalculationImpl;
-
-    @Mock
-    private InitOperation initOperation;
+    private InitOperationImpl initOperationImpl;
 
     @BeforeAll
     void setUp() {
-        startCalculation = startCalculationImpl;
+        initOperation = initOperationImpl;
     }
 
     @Test
     void testSuccessfulApply() {
-        UUID uuid = startCalculation.apply();
+        String stringUUID = "230bd0ab-d2f6-415c-b5ff-9997555175a6";
+        UUID convertedUUID = UUID.fromString(stringUUID);
 
-        assertNotNull(uuid);
+        initOperation.apply(convertedUUID);
     }
 }
