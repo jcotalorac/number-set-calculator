@@ -2,6 +2,7 @@ package com.appgate.application.usecase;
 
 import com.appgate.application.model.CalculatorStorage;
 import com.appgate.application.usecase.impl.PersistOperandImpl;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -11,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,8 +31,10 @@ class PersistOperandTest {
     void setUp() {
         persistOperand = persistOperandImpl;
     }
+
     @Test
     void testSuccessfulApply() {
+        String expected = "OK";
         String stringUUID = "230bd0ab-d2f6-415c-b5ff-9997555175a6";
         UUID convertedUUID = UUID.fromString(stringUUID);
 
@@ -38,6 +42,22 @@ class PersistOperandTest {
 
         String result = persistOperand.apply(convertedUUID, 8);
 
-        assertEquals("OK", result);
+        assertEquals(expected, result);
+    }
+
+    @Test
+    void testUnsuccessfulApply() {
+        String expected = "KO";
+        String stringUUID = "230bd0ab-d2f6-415c-b5ff-9997555175a6";
+        UUID convertedUUID = UUID.fromString(stringUUID);
+
+        String result = persistOperand.apply(convertedUUID, 8);
+
+        assertEquals(expected, result);
+    }
+
+    @AfterEach
+    void clean() {
+        CalculatorStorage.operands = new HashMap<>();
     }
 }
