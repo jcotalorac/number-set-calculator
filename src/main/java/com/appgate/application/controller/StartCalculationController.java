@@ -1,5 +1,6 @@
 package com.appgate.application.controller;
 
+import com.appgate.application.controller.dto.StartCalculationResponse;
 import com.appgate.application.usecase.StartCalculation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,8 @@ public class StartCalculationController {
     private StartCalculation startCalculation;
 
     @GetMapping("/startCalculation")
-    public UUID startCalculation() {
-        return startCalculation.apply();
+    public StartCalculationResponse startCalculation() {
+        return StartCalculationResponse.builder()
+                .operationId(startCalculation.apply()).build();
     }
 }

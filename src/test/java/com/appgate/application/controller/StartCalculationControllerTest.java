@@ -1,5 +1,6 @@
 package com.appgate.application.controller;
 
+import com.appgate.application.controller.dto.StartCalculationResponse;
 import com.appgate.application.usecase.StartCalculation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,8 +28,9 @@ class StartCalculationControllerTest {
     void testSuccessfulStartCalculation() {
         when(startCalculation.apply()).thenReturn(UUID.randomUUID());
 
-        UUID uuid = startCalculationController.startCalculation();
+        StartCalculationResponse startCalculationResponse = startCalculationController.startCalculation();
 
-        assertNotNull(uuid);
+        assertNotNull(startCalculationResponse);
+        assertNotNull(startCalculationResponse.getOperationId());
     }
 }
