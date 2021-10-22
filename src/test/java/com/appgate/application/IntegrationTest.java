@@ -39,6 +39,7 @@ public class IntegrationTest {
 
         int firstOperand = 1;
         int secondOperand = 2;
+        int expectedValue = 3;
 
         mockMvc.perform(get("/startCalculation")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -51,23 +52,185 @@ public class IntegrationTest {
                                         .operand(firstOperand)
                                 .build())))
                         .andDo(print())
-                        .andDo(loadOperandResult1 -> mockMvc.perform(post("/loadOperand")
-                                        .contentType(MediaType.APPLICATION_JSON)
+                        .andDo(loadOperandResult1 -> {
+                            mockMvc.perform(post("/loadOperand")
+                                            .contentType(MediaType.APPLICATION_JSON)
+                                    .content(mapper.writeValueAsString(LoadOperandRequest.builder()
+                                                    .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                            StartCalculationResponse.class).getOperationId())
+                                                    .operand(secondOperand)
+                                            .build())))
+                                    .andDo(print())
+                                    .andDo(result -> mockMvc.perform(post("/performOperation")
+                                                    .contentType(MediaType.APPLICATION_JSON)
+                                            .content(mapper.writeValueAsString(PerformCalculationRequest.builder()
+                                                            .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                                    StartCalculationResponse.class).getOperationId())
+                                                            .operation("ADD")
+                                                    .build())))
+                                            .andDo(print())
+                                            .andExpect(status().isOk())
+                                            .andExpect(jsonPath("$.result").value(expectedValue)));
+                        }));
+    }
+
+    @Test
+    void given2OperandWhenSubstractThemThenResultIsOK() throws Exception {
+
+        int firstOperand = 1;
+        int secondOperand = 2;
+        int expectedValue = -1;
+
+        mockMvc.perform(get("/startCalculation")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andDo(startCalculationResult -> mockMvc.perform(post("/loadOperand")
+                                .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(LoadOperandRequest.builder()
-                                                .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
-                                                        StartCalculationResponse.class).getOperationId())
-                                                .operand(secondOperand)
+                                        .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                StartCalculationResponse.class).getOperationId())
+                                        .operand(firstOperand)
                                         .build())))
-                                .andDo(print())
-                                .andDo(result -> mockMvc.perform(post("/performOperation")
-                                                .contentType(MediaType.APPLICATION_JSON)
-                                        .content(mapper.writeValueAsString(PerformCalculationRequest.builder()
-                                                        .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
-                                                                StartCalculationResponse.class).getOperationId())
-                                                        .operation("ADD")
-                                                .build())))
-                                        .andDo(print())
-                                        .andExpect(status().isOk())
-                                        .andExpect(jsonPath("$.result").value(3)))));
+                        .andDo(print())
+                        .andDo(loadOperandResult1 -> {
+                            mockMvc.perform(post("/loadOperand")
+                                            .contentType(MediaType.APPLICATION_JSON)
+                                            .content(mapper.writeValueAsString(LoadOperandRequest.builder()
+                                                    .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                            StartCalculationResponse.class).getOperationId())
+                                                    .operand(secondOperand)
+                                                    .build())))
+                                    .andDo(print())
+                                    .andDo(result -> mockMvc.perform(post("/performOperation")
+                                                    .contentType(MediaType.APPLICATION_JSON)
+                                                    .content(mapper.writeValueAsString(PerformCalculationRequest.builder()
+                                                            .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                                    StartCalculationResponse.class).getOperationId())
+                                                            .operation("SUBSTRACT")
+                                                            .build())))
+                                            .andDo(print())
+                                            .andExpect(status().isOk())
+                                            .andExpect(jsonPath("$.result").value(expectedValue)));
+                        }));
+    }
+
+    @Test
+    void given2OperandWhenMultiplyThemThenResultIsOK() throws Exception {
+
+        int firstOperand = 1;
+        int secondOperand = 2;
+        int expectedValue = 2;
+
+        mockMvc.perform(get("/startCalculation")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andDo(startCalculationResult -> mockMvc.perform(post("/loadOperand")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(LoadOperandRequest.builder()
+                                        .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                StartCalculationResponse.class).getOperationId())
+                                        .operand(firstOperand)
+                                        .build())))
+                        .andDo(print())
+                        .andDo(loadOperandResult1 -> {
+                            mockMvc.perform(post("/loadOperand")
+                                            .contentType(MediaType.APPLICATION_JSON)
+                                            .content(mapper.writeValueAsString(LoadOperandRequest.builder()
+                                                    .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                            StartCalculationResponse.class).getOperationId())
+                                                    .operand(secondOperand)
+                                                    .build())))
+                                    .andDo(print())
+                                    .andDo(result -> mockMvc.perform(post("/performOperation")
+                                                    .contentType(MediaType.APPLICATION_JSON)
+                                                    .content(mapper.writeValueAsString(PerformCalculationRequest.builder()
+                                                            .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                                    StartCalculationResponse.class).getOperationId())
+                                                            .operation("MULTIPLY")
+                                                            .build())))
+                                            .andDo(print())
+                                            .andExpect(status().isOk())
+                                            .andExpect(jsonPath("$.result").value(expectedValue)));
+                        }));
+    }
+
+    @Test
+    void given2OperandWhenDivideThemThenResultIsOK() throws Exception {
+
+        int firstOperand = 1;
+        int secondOperand = 2;
+        double expectedValue = 0.5;
+
+        mockMvc.perform(get("/startCalculation")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andDo(startCalculationResult -> mockMvc.perform(post("/loadOperand")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(LoadOperandRequest.builder()
+                                        .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                StartCalculationResponse.class).getOperationId())
+                                        .operand(firstOperand)
+                                        .build())))
+                        .andDo(print())
+                        .andDo(loadOperandResult1 -> {
+                            mockMvc.perform(post("/loadOperand")
+                                            .contentType(MediaType.APPLICATION_JSON)
+                                            .content(mapper.writeValueAsString(LoadOperandRequest.builder()
+                                                    .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                            StartCalculationResponse.class).getOperationId())
+                                                    .operand(secondOperand)
+                                                    .build())))
+                                    .andDo(print())
+                                    .andDo(result -> mockMvc.perform(post("/performOperation")
+                                                    .contentType(MediaType.APPLICATION_JSON)
+                                                    .content(mapper.writeValueAsString(PerformCalculationRequest.builder()
+                                                            .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                                    StartCalculationResponse.class).getOperationId())
+                                                            .operation("DIVIDE")
+                                                            .build())))
+                                            .andDo(print())
+                                            .andExpect(status().isOk())
+                                            .andExpect(jsonPath("$.result").value(expectedValue)));
+                        }));
+    }
+
+    @Test
+    void given2OperandWhenPowerThemThenResultIsOK() throws Exception {
+
+        int firstOperand = 1;
+        int secondOperand = 2;
+        int expectedValue = 2;
+
+        mockMvc.perform(get("/startCalculation")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andDo(startCalculationResult -> mockMvc.perform(post("/loadOperand")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(LoadOperandRequest.builder()
+                                        .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                StartCalculationResponse.class).getOperationId())
+                                        .operand(firstOperand)
+                                        .build())))
+                        .andDo(print())
+                        .andDo(loadOperandResult1 -> {
+                            mockMvc.perform(post("/loadOperand")
+                                            .contentType(MediaType.APPLICATION_JSON)
+                                            .content(mapper.writeValueAsString(LoadOperandRequest.builder()
+                                                    .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                            StartCalculationResponse.class).getOperationId())
+                                                    .operand(secondOperand)
+                                                    .build())))
+                                    .andDo(print())
+                                    .andDo(result -> mockMvc.perform(post("/performOperation")
+                                                    .contentType(MediaType.APPLICATION_JSON)
+                                                    .content(mapper.writeValueAsString(PerformCalculationRequest.builder()
+                                                            .operationId(mapper.readValue(startCalculationResult.getResponse().getContentAsString(),
+                                                                    StartCalculationResponse.class).getOperationId())
+                                                            .operation("POWER")
+                                                            .build())))
+                                            .andDo(print())
+                                            .andExpect(status().isOk())
+                                            .andExpect(jsonPath("$.result").value(expectedValue)));
+                        }));
     }
 }
