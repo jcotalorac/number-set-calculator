@@ -13,6 +13,8 @@ jobs:
 
       - name: Static code analysis
         uses: jwgmeligmeyling/spotbugs-github-action@master
+        with:
+          path: '**/spotbugsXml.xml'
 
       - name: Set up JDK 11
         uses: actions/setup-java@v1
