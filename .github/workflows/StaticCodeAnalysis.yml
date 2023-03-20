@@ -22,4 +22,4 @@ jobs:
           java-version: 11
 
       - name: Build project with Maven
-        run: mvn -B verify spotbugs:spotbugs package --file pom.xml
+        run: mvn -B verify spotbugs:check package --file pom.xml
